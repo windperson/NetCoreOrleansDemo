@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
 using ShareInterface;
+using SiloUseNetGenericHost.SiloBuild;
 
 namespace SiloUseNetGenericHost
 {
@@ -56,7 +57,7 @@ namespace SiloUseNetGenericHost
                     services.AddOptions<TypedOptions.OrleansProviderOption>().Bind(orleansConf.GetSection("Provider"));
                     services.AddOptions<TypedOptions.OrleansDashboardOption>().Bind(orleansConf.GetSection("Dashboard"));
 
-                    services.AddScoped<IGrainServiceConfigDelegate, GrainServiceConfigure>();
+                    services.AddScoped<IServiceConfigurationActions, GrainServiceConfigure>();
 
                     services.Configure<HostOptions>(option =>
                     {
