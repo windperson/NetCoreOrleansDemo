@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.271
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreOrleansDemo", "NetCoreOrleansDemo\NetCoreOrleansDemo.csproj", "{9C69CCE6-04DF-4D71-B124-B14620C0467D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Orleans_backend", "Orleans_backend", "{08C2206E-FE27-47D2-9266-DFE9D1F2029B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Orleans_frontend", "Orleans_frontend", "{D696C956-CEC2-4CCC-A306-6AF7631038D4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShareInterface", "ShareInterface\ShareInterface.csproj", "{EEABE721-DA7A-4F41-AC65-D255275C39C9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SiloUseNetGenericHost", "SiloUseNetGenericHost\SiloUseNetGenericHost.csproj", "{87360A01-D35E-46FF-9A7E-399BA3381936}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyReminderGrain", "MyReminderGrain\MyReminderGrain.csproj", "{A682E51E-DB72-4F18-AB5A-B323B805AF6C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9C69CCE6-04DF-4D71-B124-B14620C0467D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C69CCE6-04DF-4D71-B124-B14620C0467D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C69CCE6-04DF-4D71-B124-B14620C0467D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C69CCE6-04DF-4D71-B124-B14620C0467D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEABE721-DA7A-4F41-AC65-D255275C39C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEABE721-DA7A-4F41-AC65-D255275C39C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEABE721-DA7A-4F41-AC65-D255275C39C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEABE721-DA7A-4F41-AC65-D255275C39C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87360A01-D35E-46FF-9A7E-399BA3381936}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87360A01-D35E-46FF-9A7E-399BA3381936}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87360A01-D35E-46FF-9A7E-399BA3381936}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87360A01-D35E-46FF-9A7E-399BA3381936}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A682E51E-DB72-4F18-AB5A-B323B805AF6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A682E51E-DB72-4F18-AB5A-B323B805AF6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A682E51E-DB72-4F18-AB5A-B323B805AF6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A682E51E-DB72-4F18-AB5A-B323B805AF6C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9C69CCE6-04DF-4D71-B124-B14620C0467D} = {D696C956-CEC2-4CCC-A306-6AF7631038D4}
+		{87360A01-D35E-46FF-9A7E-399BA3381936} = {08C2206E-FE27-47D2-9266-DFE9D1F2029B}
+		{A682E51E-DB72-4F18-AB5A-B323B805AF6C} = {08C2206E-FE27-47D2-9266-DFE9D1F2029B}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {92D7D492-A5FA-48CD-A217-6D232B30AB18}
+	EndGlobalSection
+EndGlobal
