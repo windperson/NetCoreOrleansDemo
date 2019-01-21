@@ -16,6 +16,8 @@ namespace SiloUseNetGenericHost.HostedServices
         private readonly IApplicationLifetime _applicationLifetime;
         private readonly SiloConfigOption _siloOptions;
         private readonly OrleansProviderOption _providerOptions;
+        private readonly GrainLoadOption _grainLoadOptions;
+
         private readonly OrleansDashboardOption _dashboardOptions;
         private readonly ILogger<OrleansSiloHostedService> _logger;
 
@@ -25,6 +27,7 @@ namespace SiloUseNetGenericHost.HostedServices
         public OrleansSiloHostedService(IApplicationLifetime applicationLifetime,
             IOptions<SiloConfigOption> siloOptions,
             IOptions<OrleansProviderOption> providerOptions,
+            IOptions<GrainLoadOption> grainLoadOptions,
             IOptions<OrleansDashboardOption> dashboardOptions,
             IServiceConfigurationActions serviceConfigDelegate,
             ILogger<OrleansSiloHostedService> logger)
@@ -32,6 +35,7 @@ namespace SiloUseNetGenericHost.HostedServices
             _applicationLifetime = applicationLifetime;
             _siloOptions = siloOptions.Value;
             _providerOptions = providerOptions.Value;
+            _grainLoadOptions = grainLoadOptions.Value;
             _dashboardOptions = dashboardOptions.Value;
             _serviceConfigDelegate = serviceConfigDelegate;
             _logger = logger;
@@ -56,7 +60,7 @@ namespace SiloUseNetGenericHost.HostedServices
         {
             _logger.LogInformation("initialize Orleans silo host...");
 
-            _siloHost = OrleansSiloUtil.CreateSiloHost(_siloOptions, _providerOptions, _dashboardOptions, _logger, _serviceConfigDelegate);
+            _siloHost = OrleansSiloUtil.CreateSiloHost(_siloOptions, _providerOptions, _grainLoadOptions, _dashboardOptions, _logger, _serviceConfigDelegate);
             try
             {
                 await _siloHost.StartAsync();

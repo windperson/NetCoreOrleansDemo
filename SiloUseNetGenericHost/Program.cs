@@ -28,6 +28,19 @@ namespace SiloUseNetGenericHost
             Log.Logger = logConfig
                 .Enrich.FromLogContext().CreateLogger();
 
+            try
+            {
+                var genericHost = CreateHostBuilder(args).Build();
+                await genericHost.RunAsync();
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal(ex, "Generic host terminated unexpectedly");
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+            }
         }
 
         private static IHostBuilder CreateHostBuilder(string[] args) =>
@@ -51,8 +64,8 @@ namespace SiloUseNetGenericHost
                 {
                     var orleansConf = hostContext.Configuration.GetSection("Orleans");
 
-                    services.AddOptions<TypedOptions.GrainLoadOption>().Bind(orleansConf.GetSection("grain_option"));
-
+                    
+                    services.AddOptions<TypedOptions.GrainLoadOption>().Bind(orleansConf.GetSection("GrainOption"));
                     services.AddOptions<TypedOptions.SiloConfigOption>().Bind(orleansConf.GetSection("SiloConfig"));
                     services.AddOptions<TypedOptions.OrleansProviderOption>().Bind(orleansConf.GetSection("Provider"));
                     services.AddOptions<TypedOptions.OrleansDashboardOption>().Bind(orleansConf.GetSection("Dashboard"));

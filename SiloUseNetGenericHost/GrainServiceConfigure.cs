@@ -26,11 +26,12 @@ namespace SiloUseNetGenericHost
             get
             {
                 var dllPaths = _grainLoadOptions.LoadPaths;
+                var excludedTypeFullNames = _grainLoadOptions.ExcludedTypeFullNames;
                 var ret = new List<Action<IServiceCollection>>
                 {
                     ServerServiceConfigurationAction
                 };
-                ret.AddRange(GetAllNeedServiceConfigure(dllPaths));
+                ret.AddRange(GetAllNeedServiceConfigure(dllPaths, excludedTypeFullNames));
                 return ret;
             }
         }
@@ -41,23 +42,24 @@ namespace SiloUseNetGenericHost
                 .AddLogging(loggingBuilder => loggingBuilder.AddSerilog());
         };
 
-        private IEnumerable<Action<IServiceCollection>> GetAllNeedServiceConfigure(List<string> pathsList)
+        private static IEnumerable<Action<IServiceCollection>> GetAllNeedServiceConfigure(IEnumerable<string> pathsList, ICollection<string> excludedTypeFullNames)
         {
             var ret = new List<Action<IServiceCollection>>();
             foreach (var path in pathsList)
             {
-                var dllFileInfo = new FileInfo(path);
+                var fullPath = Path.GetFullPath(path);
+                var dllFileInfo = new FileInfo(fullPath);
                 var assemblyDll = Assembly.LoadFile(dllFileInfo.FullName);
                 var types = assemblyDll.GetTypes();
                 var needServiceConfigureClasses = types.Where(x =>
-                        typeof(IGrainServiceConfigDelegate).IsAssignableFrom(x) && !x.IsAbstract && !x.IsInterface)
+                        typeof(IGrainServiceConfigDelegate).IsAssignableFrom(x) 
+                        && !x.IsAbstract 
+                        && !x.IsInterface 
+                        && !excludedTypeFullNames.Contains(x.FullName))
                     .ToList();
                 foreach (var serviceConfigureClass in needServiceConfigureClasses)
                 {
-
-                    var obj = Activator.CreateInstance(serviceConfigureClass) as IGrainServiceConfigDelegate;
-
-                    if (obj == null)
+                    if (!(Activator.CreateInstance(serviceConfigureClass) is IGrainServiceConfigDelegate obj))
                     {
                         throw new LoadGrainDllFailedException(serviceConfigureClass.FullName);
                     }
@@ -65,13 +67,10 @@ namespace SiloUseNetGenericHost
                     var loadAction = obj.ServiceConfigurationAction;
                     ret.Add(loadAction);
                 }
-
             }
 
             return ret;
         }
-
-        
     }
 
     public class LoadGrainDllFailedException : Exception

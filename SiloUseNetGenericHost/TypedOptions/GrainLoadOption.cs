@@ -4,8 +4,8 @@ namespace SiloUseNetGenericHost.TypedOptions
 {
     public class GrainLoadOption
     {
-        public List<string> LoadPaths { get; set; }
+        public List<string> LoadPaths { get; } = new List<string>();
 
-        public List<string> ExcludeDLLs { get; set; }
+        public List<string> ExcludedTypeFullNames { get; } = new List<string>();
     }
 }

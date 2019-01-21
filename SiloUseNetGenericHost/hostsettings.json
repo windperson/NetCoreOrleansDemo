@@ -1,13 +1,3 @@
 {
-  "environment": "Development",
-
-  "grain_option": {
-
-    "LoadPath": [
-      "../grains"
-    ],
-
-    "ExcludeDLLs": []
-  }
-
+  "environment": "Development"
 }

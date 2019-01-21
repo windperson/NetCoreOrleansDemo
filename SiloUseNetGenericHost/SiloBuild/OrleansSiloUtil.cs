@@ -1,13 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Net;
-using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 using Microsoft.Extensions.Logging;
 using Orleans;
+using Orleans.ApplicationParts;
 using Orleans.Configuration;
 using Orleans.Hosting;
 using SiloUseNetGenericHost.TypedOptions;
 using Serilog;
-using ShareInterface;
 
 namespace SiloUseNetGenericHost.SiloBuild
 {
@@ -15,6 +17,7 @@ namespace SiloUseNetGenericHost.SiloBuild
     {
         public static ISiloHost CreateSiloHost(SiloConfigOption siloOptions,
             OrleansProviderOption providerOptions,
+            GrainLoadOption grainLoadOptions, 
             OrleansDashboardOption dashboardOptions,
             Microsoft.Extensions.Logging.ILogger logger, IServiceConfigurationActions serviceConfigurationDelegates)
         {
@@ -70,7 +73,6 @@ namespace SiloUseNetGenericHost.SiloBuild
                     {
                         options.CollectionPrefix = reminderOption.CollectionPrefix;
                     }
-
                 })
                 .AddMongoDBGrainStorageAsDefault(options =>
                 {
@@ -91,15 +93,18 @@ namespace SiloUseNetGenericHost.SiloBuild
                 builder.ConfigureServices(configurationAction);
             }
             
-            builder
-                .ConfigureApplicationParts(parts =>
-                {
-                    parts.AddFromApplicationBaseDirectory().WithReferences();
-                })
-                .ConfigureLogging(logging =>
-                {
-                    logging.AddSerilog(dispose: true);
-                });
+            builder.ConfigureApplicationParts(parts =>
+            {
+                parts.AddFromApplicationBaseDirectory().WithReferences();
+
+                var dllPaths = grainLoadOptions.LoadPaths;
+
+                ConfigOtherFolderGrainLoad(parts, dllPaths);
+            })
+            .ConfigureLogging(logging =>
+            {
+                logging.AddSerilog(dispose: true);
+            });
 
             try
             {
@@ -115,6 +120,17 @@ namespace SiloUseNetGenericHost.SiloBuild
         private static bool IpAddressNotSpecified(string ipString)
         {
             return string.IsNullOrEmpty(ipString.Trim()) || "*".Equals(ipString.Trim());
+        }
+
+        private static void ConfigOtherFolderGrainLoad(IApplicationPartManager applicationPartManager, IEnumerable<string> pathsList)
+        {
+            foreach (var path in pathsList)
+            {
+                var fullPath = Path.GetFullPath(path);
+                var dllFileInfo = new FileInfo(fullPath);
+                var assembly = Assembly.LoadFile(dllFileInfo.FullName);
+                applicationPartManager.AddApplicationPart(assembly).WithReferences();
+            }
         }
     }
 }

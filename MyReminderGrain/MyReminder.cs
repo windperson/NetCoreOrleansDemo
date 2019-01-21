@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Orleans;
 using ShareInterface;
 
 namespace MyReminderGrain
 {
-    public class MyReminder : IValueTaskDemo
+    public class MyReminder : Grain, IValueTaskDemo
     {
         private readonly IOutputMsg _outputMsg;
 
@@ -15,7 +16,7 @@ namespace MyReminderGrain
 
         public ValueTask<HelloMyValue> Alarm()
         {
-            var output = new HelloMyValue {Greeting = "Times UP!", YellTime = DateTime.Now};
+            var output = new HelloMyValue { Greeting = "Hello World!", YellTime = DateTime.Now };
             _outputMsg.Output(output.Greeting);
             return new ValueTask<HelloMyValue>(output);
         }

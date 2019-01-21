@@ -5,6 +5,10 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\grain_dlls\MyReminderGrain</OutputPath>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.Orleans.CodeGenerator.MSBuild" Version="2.2.3">
       <PrivateAssets>all</PrivateAssets>
