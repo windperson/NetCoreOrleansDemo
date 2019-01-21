@@ -13,7 +13,7 @@ using Serilog;
 
 namespace SiloUseNetGenericHost.SiloBuild
 {
-    internal class OrleansSiloUtil
+    internal class OrleansSiloBuildUtil
     {
         public static ISiloHost CreateSiloHost(SiloConfigOption siloOptions,
             OrleansProviderOption providerOptions,
@@ -25,11 +25,17 @@ namespace SiloUseNetGenericHost.SiloBuild
 
             if (dashboardOptions.Enable)
             {
+                logger.LogInformation("Enable Orleans Dashboard (https://github.com/OrleansContrib/OrleansDashboard) on this host.");
                 builder.UseDashboard(options =>
                 {
                     options.Port = dashboardOptions.Port;
                 });
             }
+
+            builder.Configure<SiloMessagingOptions>(options =>{
+                options.ResponseTimeout = TimeSpan.FromMinutes(siloOptions.ResponseTimeoutMinutes);
+                options.ResponseTimeoutWithDebugger = TimeSpan.FromMinutes(siloOptions.ResponseTimeoutMinutes + 60);
+            });
 
             builder.Configure<ClusterOptions>(options =>
             {

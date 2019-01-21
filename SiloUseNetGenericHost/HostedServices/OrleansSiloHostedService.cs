@@ -60,7 +60,7 @@ namespace SiloUseNetGenericHost.HostedServices
         {
             _logger.LogInformation("initialize Orleans silo host...");
 
-            _siloHost = OrleansSiloUtil.CreateSiloHost(_siloOptions, _providerOptions, _grainLoadOptions, _dashboardOptions, _logger, _serviceConfigDelegate);
+            _siloHost = OrleansSiloBuildUtil.CreateSiloHost(_siloOptions, _providerOptions, _grainLoadOptions, _dashboardOptions, _logger, _serviceConfigDelegate);
             try
             {
                 await _siloHost.StartAsync();

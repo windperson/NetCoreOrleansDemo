@@ -63,7 +63,6 @@ namespace SiloUseNetGenericHost
                 .ConfigureServices((hostContext, services) =>
                 {
                     var orleansConf = hostContext.Configuration.GetSection("Orleans");
-
                     
                     services.AddOptions<TypedOptions.GrainLoadOption>().Bind(orleansConf.GetSection("GrainOption"));
                     services.AddOptions<TypedOptions.SiloConfigOption>().Bind(orleansConf.GetSection("SiloConfig"));
