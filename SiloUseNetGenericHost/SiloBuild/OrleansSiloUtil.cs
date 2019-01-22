@@ -132,11 +132,19 @@ namespace SiloUseNetGenericHost.SiloBuild
         {
             foreach (var path in pathsList)
             {
-                var fullPath = Path.GetFullPath(path);
+                var fullPath = Path.GetFullPath(path, AssemblyUtil.GetCurrentAssemblyPath());
                 var dllFileInfo = new FileInfo(fullPath);
                 var assembly = Assembly.LoadFile(dllFileInfo.FullName);
                 applicationPartManager.AddApplicationPart(assembly).WithReferences();
             }
+        }
+    }
+
+    public static class AssemblyUtil
+    {
+        public static string GetCurrentAssemblyPath()
+        {
+            return System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace MyReminderGrain
 
         private Dictionary<string, ReminderInfo> _registeredReminders = new Dictionary<string, ReminderInfo>();
 
-        private const int UpperLimit = 5;
+        private const int UpperLimit = 3;
         private int _calledTimes;
 
         public MyReminder(IOutputMsg outputMsg)
@@ -42,7 +42,7 @@ namespace MyReminderGrain
 
             reminderInfo.CalledCount++;
 
-            if (reminderInfo.CalledCount > UpperLimit)
+            if (reminderInfo.CalledCount >= UpperLimit)
             {
                 await UnregisterReminder(reminderInfo.Reminder);
                 _outputMsg.Output($"Reminder: {reminderName} unregistered.");

@@ -46,7 +46,7 @@ namespace SiloUseNetGenericHost
             var ret = new List<Action<IServiceCollection>>();
             foreach (var path in pathsList)
             {
-                var fullPath = Path.GetFullPath(path);
+                var fullPath = Path.GetFullPath(path, AssemblyUtil.GetCurrentAssemblyPath());
                 var dllFileInfo = new FileInfo(fullPath);
                 var assemblyDll = Assembly.LoadFile(dllFileInfo.FullName);
                 var types = assemblyDll.GetTypes();
