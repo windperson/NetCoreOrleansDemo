@@ -1,0 +1,81 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        //Orleans RPC interface
+        {
+            "label": "build_share_interface",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/ShareInterface/ShareInterface.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+
+        //Orleans Server
+        {
+            "label": "build_grain",
+            "command": "dotnet",
+            "type": "process",
+            "dependsOn": [
+                "build_share_interface"
+            ],
+            "args": [
+                "build",
+                "${workspaceFolder}/MyReminderGrain/MyReminderGrain.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build_silo",
+            "command": "dotnet",
+            "type": "process",
+            "dependsOn":[
+                "build_share_interface"
+            ],
+            "args": [
+                "build",
+                "${workspaceFolder}/SiloUseNetGenericHost/SiloUseNetGenericHost.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        
+        //Orleans Client
+        {
+            "label": "build_client",
+            "command": "dotnet",
+            "type": "process",
+            "dependsOn":[
+                "build_share_interface"
+            ],
+            "args": [
+                "build",
+                "${workspaceFolder}/ConsoleClient/ConsoleClient.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+
+        {
+            "label": "build_backend",
+            "dependsOn": [
+                "build_silo",
+                "build_grain"
+            ],
+            "group": "build",
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build",
+            "dependsOn": [
+                "build_backend",
+                "build_client"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": "$msCompile"
+        }
+    ]
+}
