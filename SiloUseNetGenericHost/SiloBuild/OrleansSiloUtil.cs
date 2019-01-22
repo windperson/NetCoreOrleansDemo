@@ -93,12 +93,16 @@ namespace SiloUseNetGenericHost.SiloBuild
                     }
                 });
             }
+            else
+            {
+                builder.UseInMemoryReminderService();
+            }
 
             foreach (var configurationAction in serviceConfigurationDelegates.GrainServiceConfigurationActions)
             {
                 builder.ConfigureServices(configurationAction);
             }
-            
+
             builder.ConfigureApplicationParts(parts =>
             {
                 parts.AddFromApplicationBaseDirectory().WithReferences();
@@ -106,12 +110,8 @@ namespace SiloUseNetGenericHost.SiloBuild
                 var dllPaths = grainLoadOptions.LoadPaths;
 
                 ConfigOtherFolderGrainLoad(parts, dllPaths);
-            })
-            .ConfigureLogging(logging =>
-            {
-                logging.AddSerilog(dispose: true);
             });
-
+            
             try
             {
                 return builder.Build();

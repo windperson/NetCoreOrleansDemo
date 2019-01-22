@@ -38,8 +38,7 @@ namespace SiloUseNetGenericHost
 
         private static Action<IServiceCollection> ServerServiceConfigurationAction { get; } = services =>
         {
-            services
-                .AddLogging(loggingBuilder => loggingBuilder.AddSerilog());
+            //services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog());
         };
 
         private static IEnumerable<Action<IServiceCollection>> GetAllNeedServiceConfigure(IEnumerable<string> pathsList, ICollection<string> excludedTypeFullNames)
