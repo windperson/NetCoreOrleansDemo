@@ -260,4 +260,5 @@ paket-files/
 __pycache__/
 *.pyc
 
-grain_dlls
+grain_dlls/*
+!grain_dlls/.gitignore
