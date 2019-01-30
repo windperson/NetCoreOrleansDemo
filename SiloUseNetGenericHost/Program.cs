@@ -30,8 +30,10 @@ namespace SiloUseNetGenericHost
 
             try
             {
-                var genericHost = CreateHostBuilder(args).Build();
-                await genericHost.RunAsync();
+                using(var genericHost = CreateHostBuilder(args).Build())
+                {
+                    await genericHost.RunAsync();
+                }
             }
             catch (Exception ex)
             {
