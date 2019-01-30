@@ -33,6 +33,11 @@ namespace MyReminderGrain
             return output;
         }
 
+        public Task<string> GetCurrentStatus()
+        {
+            return _registeredReminders.Count > 0 ? Task.FromResult(@"running") : Task.FromResult("stopped");
+        }
+
         public async Task ReceiveReminder(string reminderName, TickStatus status)
         {
             var output = new HelloMyValue { Greeting = $"get Reminder: {reminderName}", YellTime = DateTime.Now };

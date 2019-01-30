@@ -18,5 +18,6 @@ namespace ShareInterface
     public interface IValueTaskDemo : IGrainWithGuidKey
     {
         ValueTask<HelloMyValue> Alarm();
+        Task<string> GetCurrentStatus();
     }
 }
