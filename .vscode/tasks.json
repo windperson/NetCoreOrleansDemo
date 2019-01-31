@@ -18,9 +18,7 @@
             "label": "build_grain",
             "command": "dotnet",
             "type": "process",
-            "dependsOn": [
-                "build_share_interface"
-            ],
+            
             "args": [
                 "build",
                 "${workspaceFolder}/MyReminderGrain/MyReminderGrain.csproj"
@@ -31,9 +29,7 @@
             "label": "build_silo",
             "command": "dotnet",
             "type": "process",
-            "dependsOn":[
-                "build_share_interface"
-            ],
+            
             "args": [
                 "build",
                 "${workspaceFolder}/SiloUseNetGenericHost/SiloUseNetGenericHost.csproj"
@@ -41,17 +37,26 @@
             "problemMatcher": "$msCompile"
         },
         
-        //Orleans Client
+        //Orleans Console Client
         {
-            "label": "build_client",
+            "label": "build_console_client",
             "command": "dotnet",
             "type": "process",
-            "dependsOn":[
-                "build_share_interface"
-            ],
-            "args": [
+                        "args": [
                 "build",
                 "${workspaceFolder}/ConsoleClient/ConsoleClient.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        //Orleans Web Client
+        {
+            "label": "build_web_client",
+            "command": "dotnet",
+            "type": "process",
+            
+            "args": [
+                "build",
+                "${workspaceFolder}/WebClient/WebClient.csproj"
             ],
             "problemMatcher": "$msCompile"
         },
@@ -69,7 +74,8 @@
             "label": "build",
             "dependsOn": [
                 "build_backend",
-                "build_client"
+                "build_console_client",
+                "build_web_client"
             ],
             "group": {
                 "kind": "build",

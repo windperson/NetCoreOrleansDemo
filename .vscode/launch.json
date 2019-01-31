@@ -5,10 +5,17 @@
     "version": "0.2.0",
     "compounds": [
         {
-            "name": "Launch Demo",
+            "name": "Launch Web Demo",
             "configurations": [
                 "Launch Server",
-                "Launch Client"
+                "Launch Web Client"
+            ]
+        },
+        {
+            "name": "Launch Console Demo",
+            "configurations": [
+                "Launch Server",
+                "Launch Console Client"
             ]
         }
     ],
@@ -28,10 +35,10 @@
             "internalConsoleOptions": "openOnSessionStart"
         },
         {
-            "name": "Launch Client",
+            "name": "Launch Console Client",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build_client",
+            "preLaunchTask": "build_console_client",
             // If you have changed target frameworks, make sure to update the program path.
             "program": "${workspaceFolder}/ConsoleClient/bin/Debug/netcoreapp2.2/ConsoleClient.dll",
             "args": [],
@@ -40,6 +47,38 @@
             "console": "externalTerminal",
             "stopAtEntry": false,
             "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
+            "name": "Launch Web Client",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build_web_client",
+            // If you have changed target frameworks, make sure to update the program path.
+            "program": "${workspaceFolder}/WebClient/bin/Debug/netcoreapp2.2/WebClient.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/WebClient",
+            "console": "externalTerminal",
+            "stopAtEntry": false,
+            "launchBrowser": {
+                "enabled": true,
+                "args": "${auto-detect-url}",
+                "windows": {
+                    "command": "cmd.exe",
+                    "args": "/C start ${auto-detect-url}"
+                },
+                "osx": {
+                    "command": "open"
+                },
+                "linux": {
+                    "command": "xdg-open"
+                }
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/WebClient/Views"
+            }
         }
     ]
 }
