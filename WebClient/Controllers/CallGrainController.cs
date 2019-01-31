@@ -29,34 +29,36 @@ namespace WebClient.Controllers
             _provider = providerOptionsMonitor.CurrentValue;
         }
 
-        public IActionResult Index(CallResultViewModel callResult)
+        public IActionResult Index(NUlid.Ulid? runSessionId)
         {
+            ViewData["signalrHubUrl"] = @"/running_status";
+            ViewData["sessionId"] = runSessionId ?? null;
+
+            var viewModel = TempData.Get<CallResultViewModel>("CallResult");
+            if (viewModel != null)
+            {
+                return View(viewModel);
+            }
+
             return View();
         }
 
-        [HttpPost]
         public async Task<IActionResult> CallGrainAlarm()
         {
-            using (var client =
-                OrleansClientBuilder.Create(_clusterInfo, _provider, new[] { typeof(IValueTaskDemo) }))
+            using (var client = OrleansClientBuilder.Create(_clusterInfo, _provider, new[] { typeof(IValueTaskDemo) }))
             {
                 await client.Connect(RetryFilter);
 
-                var grainGuid = Guid.NewGuid();
+                var runSessionId = NUlid.Ulid.NewUlid();
+                var grainGuid = runSessionId.ToGuid();
 
                 var demoGrain = client.GetGrain<IValueTaskDemo>(grainGuid);
                 var callResult = await demoGrain.Alarm();
                 await client.Close();
-                ViewData["signalrHubUrl"] = @"/running_status";
 
-                return RedirectToAction(nameof(Index), new
-                {
-                    callResult = new CallResultViewModel
-                    {
-                        Result = callResult,
-                        GrainId = grainGuid.ToString(),
-                    }
-                });
+                TempData.Put("CallResult", new CallResultViewModel { Result = callResult, RunSessionId = runSessionId });
+
+                return RedirectToAction(nameof(Index), new { runSessionId });
             }
         }
 

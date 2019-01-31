@@ -6,6 +6,6 @@ namespace WebClient.Models
     {
         public HelloMyValue Result { get; set; }
 
-        public string GrainId { get; set; }
+        public NUlid.Ulid RunSessionId { get; set; }
     }
 }

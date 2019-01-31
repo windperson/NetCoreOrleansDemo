@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Channels;
 using System.Threading.Tasks;
@@ -22,25 +20,20 @@ namespace WebClient.Hubs
         private readonly OrleansProviderOption _provider;
 
         public LongRunningStatusHub(
-            IOptions<TypedOptions.ClusterInfoOption> clusterInfoOptions,
-            IOptions<TypedOptions.OrleansProviderOption> providerOptions,
+            IOptionsMonitor<ClusterInfoOption> clusterInfoOptions,
+            IOptionsMonitor<OrleansProviderOption> providerOptions,
             ILogger<LongRunningStatusHub> logger)
         {
-            _clusterInfo = clusterInfoOptions.Value;
-            _provider = providerOptions.Value;
+            _clusterInfo = clusterInfoOptions.CurrentValue;
+            _provider = providerOptions.CurrentValue;
             _logger = logger;
         }
 
         // ReSharper disable once UnusedMember.Global
-        public ChannelReader<string> CheckJobStatus(string grainId)
+        public ChannelReader<string> CheckJobStatus(NUlid.Ulid grainId)
         {
-            if (string.IsNullOrEmpty(grainId) || Guid.TryParse(grainId, out var grainGuid))
-            {
-                throw new Exception($"grainId is not valid!, input={{{grainId}}}");
-            }
-
             var channel = Channel.CreateUnbounded<string>();
-            _ = DetectLongRunningStatus(channel.Writer, grainGuid, 60, new CancellationToken());
+            _ = DetectLongRunningStatus(channel.Writer, grainId.ToGuid(), 60, new CancellationToken());
 
             return channel.Reader;
         }
@@ -59,7 +52,6 @@ namespace WebClient.Hubs
                     await client.Connect(exception => RetryFilter(exception, cancellationToken));
 
                     var status = "stopped";
-
                     do
                     {
                         // Check the cancellation token regularly so that the server will stop
@@ -70,8 +62,12 @@ namespace WebClient.Hubs
                         status = await demoGrain.GetCurrentStatus();
 
                         await writer.WriteAsync(status, cancellationToken);
-                        await Task.Delay(TimeSpan.FromSeconds(delay), cancellationToken);
+                        if (status == "stopped")
+                        {
+                            break;
+                        }
 
+                        await Task.Delay(TimeSpan.FromSeconds(delay), cancellationToken);
                     } while (status == "running");
 
                     await client.Close();

@@ -26,7 +26,7 @@ namespace MyReminderGrain
             _calledTimes++;
             var reminderName = $"myReminder{_calledTimes}";
             var reminder = await RegisterOrUpdateReminder(reminderName, TimeSpan.FromSeconds(30), TimeSpan.FromMinutes(1));
-            _registeredReminders[reminderName] = new ReminderInfo{Reminder = reminder};
+            _registeredReminders[reminderName] = new ReminderInfo { Reminder = reminder, CalledCount = 1 };
             var output = new HelloMyValue { Greeting = "Hello World!", YellTime = DateTime.Now };
             _outputMsg.Output(output.Greeting);
 
