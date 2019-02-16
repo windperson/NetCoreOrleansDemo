@@ -18,6 +18,7 @@
     "WebClient": {
       "commandName": "IISExpress",
       "launchBrowser": true,
+      "launchUrl": "CallGrain",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

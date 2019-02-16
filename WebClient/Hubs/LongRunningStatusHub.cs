@@ -33,7 +33,7 @@ namespace WebClient.Hubs
         public ChannelReader<string> CheckJobStatus(NUlid.Ulid grainId)
         {
             var channel = Channel.CreateUnbounded<string>();
-            _ = DetectLongRunningStatus(channel.Writer, grainId.ToGuid(), 60, new CancellationToken());
+            _ = DetectLongRunningStatus(channel.Writer, grainId.ToGuid(), 3, new CancellationToken());
 
             return channel.Reader;
         }

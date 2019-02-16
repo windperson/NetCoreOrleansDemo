@@ -13,7 +13,7 @@ namespace MyReminderGrain
 
         private Dictionary<string, ReminderInfo> _registeredReminders = new Dictionary<string, ReminderInfo>();
 
-        private const int UpperLimit = 3;
+        private const int UpperLimit = 0;
         private int _calledTimes;
 
         public MyReminder(IOutputMsg outputMsg)
