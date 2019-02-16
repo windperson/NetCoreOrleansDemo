@@ -33,6 +33,7 @@ namespace WebClient.Controllers
         {
             ViewData["signalrHubUrl"] = @"/running_status";
             ViewData["sessionId"] = runSessionId ?? null;
+            ViewData["system_ver"] = Util.AssemblyHelper.GetAssemblyVersion();
 
             var viewModel = TempData.Get<CallResultViewModel>("CallResult");
             if (viewModel != null)

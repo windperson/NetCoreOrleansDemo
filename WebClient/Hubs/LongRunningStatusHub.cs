@@ -51,6 +51,8 @@ namespace WebClient.Hubs
                 {
                     await client.Connect(exception => RetryFilter(exception, cancellationToken));
 
+                    var demoGrain = client.GetGrain<IValueTaskDemo>(guid);
+
                     var status = "stopped";
                     do
                     {
@@ -58,7 +60,6 @@ namespace WebClient.Hubs
                         // producing items if the client disconnects.
                         cancellationToken.ThrowIfCancellationRequested();
 
-                        var demoGrain = client.GetGrain<IValueTaskDemo>(guid);
                         status = await demoGrain.GetCurrentStatus();
 
                         await writer.WriteAsync(status, cancellationToken);
@@ -98,6 +99,7 @@ namespace WebClient.Hubs
             }
             catch (Exception ex)
             {
+                _logger.Error(400,"Runtime error", ex);
                 writer.TryComplete(ex);
             }
 
