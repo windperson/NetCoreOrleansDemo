@@ -8,6 +8,7 @@ using Orleans;
 using Orleans.ApplicationParts;
 using Orleans.Configuration;
 using Orleans.Hosting;
+using Orleans.Statistics;
 using SiloUseNetGenericHost.TypedOptions;
 using Serilog;
 
@@ -65,7 +66,6 @@ namespace SiloUseNetGenericHost.SiloBuild
                     options.ConnectionString = clusterOption.DbConn;
                     options.DatabaseName = clusterOption.DbName;
 
-                    // see:https://github.com/OrleansContrib/Orleans.Providers.MongoDB/issues/54
                     options.CollectionPrefix = clusterOption.CollectionPrefix;
                 })
                 .UseMongoDBReminders(options =>
@@ -111,6 +111,8 @@ namespace SiloUseNetGenericHost.SiloBuild
 
                 ConfigOtherFolderGrainLoad(parts, dllPaths);
             });
+
+            builder.UsePerfCounterEnvironmentStatistics();
             
             try
             {

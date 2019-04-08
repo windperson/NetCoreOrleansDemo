@@ -2,6 +2,10 @@
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
+    "iis": {
+      "applicationUrl": "http://localhost/WebClient",
+      "sslPort": 0
+    },
     "iisExpress": {
       "applicationUrl": "http://localhost:53630",
       "sslPort": 44392
@@ -16,7 +20,7 @@
       }
     },
     "WebClient": {
-      "commandName": "IISExpress",
+      "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "CallGrain",
       "environmentVariables": {

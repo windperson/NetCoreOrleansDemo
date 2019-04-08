@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Orleans;
 using Orleans.Configuration;
-using Orleans.Runtime;
 using Serilog;
 using WebClient.TypedOptions;
 
@@ -13,7 +11,7 @@ namespace WebClient.Util
     {
         public static IClusterClient Create(
             ClusterInfoOption clusterInfo,
-            OrleansProviderOption providerOption, 
+            OrleansProviderOption providerOption,
             IEnumerable<Type> applicationPartTypes)
         {
             var clientBuilder = new ClientBuilder();
@@ -37,7 +35,7 @@ namespace WebClient.Util
 
                     options.ConnectionString = mongoSetting.DbConn;
                     options.DatabaseName = mongoSetting.DbName;
-                    // see:https://github.com/OrleansContrib/Orleans.Providers.MongoDB/issues/54
+
                     options.CollectionPrefix = mongoSetting.CollectionPrefix;
                 });
             }
